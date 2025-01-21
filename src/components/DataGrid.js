@@ -15,7 +15,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 // Mark all grids as using legacy themes
 provideGlobalGridOptions({ theme: "legacy"});
 
-const DataGrid = () => {
+const DataGrid = ({ onEdit }) => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.data);
 
@@ -26,6 +26,13 @@ const DataGrid = () => {
   const columnDefs = [
     { headerName: 'ID', field: 'id' },
     { headerName: 'Product Name', field: 'title' },
+    {
+        headerName: 'Actions',
+        field: 'actions',
+        cellRenderer: (params) => (
+          <button onClick={() => onEdit(params.data)}>Edit</button>
+        ),
+      },
     // Add more columns as needed
   ];
 
