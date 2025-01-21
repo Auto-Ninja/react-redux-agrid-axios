@@ -1,23 +1,22 @@
 // src/redux/slice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { fetchData as fetchApiData, addData as addApiData, editData as editApiData } from '../services/apiService';
 
 const fetchData = createAsyncThunk('data/fetchData', async () => {
-  const response = await axios.get('https://fakestoreapi.com/products');
-  return response.data;
+    const data = await fetchApiData();
+    return data;
 });
 
 // Async thunk to add data
 const addData = createAsyncThunk('data/addData', async (newData) => {
-    const response = await axios.post('https://fakestoreapi.com/products', newData);
-    return response.data;
+    const data = await addApiData(newData);
+    return data;
   });
   
   // Async thunk to edit data
   const editData = createAsyncThunk('data/editData', async (updatedData) => {
-    const { id, ...changes } = updatedData;
-    const response = await axios.put(`https://fakestoreapi.com/products/${id}`, changes);
-    return response.data;
+    const data = await editApiData(updatedData);
+    return data;
   });
 
 const dataSlice = createSlice({
