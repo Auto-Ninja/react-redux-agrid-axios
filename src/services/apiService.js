@@ -1,9 +1,11 @@
 // src/apiService.js
 import axios from 'axios';
+import { API_PATHS } from '../constants';
 
 // Create an instance of axios
 const api = axios.create({
-  baseURL: 'https://fakestoreapi.com',
+    //baseURL: process.env.REACT_APP_API_BASE_URL,
+    baseURL :"https://fakestoreapi.com"
 });
 
 // Add a request interceptor
@@ -40,7 +42,7 @@ api.interceptors.response.use(
 // Fetch data API call
 const fetchData = async () => {
   try {
-    const response = await api.get('/products');
+    const response = await api.get(API_PATHS.FETCH_DATA);
     return response.data;
   } catch (error) {
     handleError(error);
@@ -50,7 +52,7 @@ const fetchData = async () => {
 // Add data API call
 const addData = async (newData) => {
   try {
-    const response = await api.post('/products', newData);
+    const response = await api.post(API_PATHS.ADD_DATA, newData);
     return response.data;
   } catch (error) {
     handleError(error);
@@ -61,7 +63,7 @@ const addData = async (newData) => {
 const editData = async (updatedData) => {
   const { id, ...changes } = updatedData;
   try {
-    const response = await api.put(`/products/${id}`, changes);
+    const response = await api.put(API_PATHS.EDIT_DATA(id), changes);
     return response.data;
   } catch (error) {
     handleError(error);
