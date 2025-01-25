@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addData, editData } from '../redux/slice';
+import { addProductData, editProductData } from '../redux/productSlice';
 
 const DataForm = ({ isEdit, currentData, onClose }) => {
   const [formData, setFormData] = useState(

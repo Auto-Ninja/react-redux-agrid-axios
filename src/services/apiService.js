@@ -40,9 +40,9 @@ api.interceptors.response.use(
 );
 
 // Fetch data API call
-const fetchData = async () => {
+const fetchData = async (category) => {
   try {
-    const response = await api.get(API_PATHS.FETCH_DATA);
+    const response = await api.get(API_PATHS.FETCH_DATA+category);
     return response.data;
   } catch (error) {
     handleError(error);
@@ -84,5 +84,15 @@ const handleError = (error) => {
   }
 };
 
-export { fetchData, addData, editData };
+// Fetch data API call
+const fetchCategoryData = async () => {
+  try {
+    const response = await api.get(API_PATHS.FETCH_CATEGORY_DATA);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export { fetchData, addData, editData ,fetchCategoryData};
 

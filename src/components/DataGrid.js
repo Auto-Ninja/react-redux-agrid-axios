@@ -2,7 +2,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AgGridReact } from 'ag-grid-react';
-import { fetchData } from '../redux/slice';
+import { fetchProductData } from '../redux/productSlice';
+import {fetchCategoryData } from '../redux/categorySlice';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -17,15 +18,18 @@ provideGlobalGridOptions({ theme: "legacy"});
 
 const DataGrid = ({ onEdit }) => {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.data);
-
+  const { data, loading, error } = useSelector((state) => state.products);
+  const categories  = useSelector((state) => state.categories);
+  
   useEffect(() => {
-    dispatch(fetchData());
+    dispatch(fetchCategoryData())
   }, [dispatch]);
-
+  
   const columnDefs = [
     { headerName: 'ID', field: 'id' },
     { headerName: 'Product Name', field: 'title' },
+    { headerName: 'Category Name', field: 'category' },
+    
     {
         headerName: 'Actions',
         field: 'actions',
@@ -36,12 +40,32 @@ const DataGrid = ({ onEdit }) => {
     // Add more columns as needed
   ];
 
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    alert(category)
+    // Fetch and set states based on the selected country
+    dispatch(fetchProductData(category));
+  };
+
   return (
+    <>
+    <label>
+      Pick a Category: 
+      <select name="selectedCategory" onChange={handleCategoryChange}>
+      <option value="">Select Category</option>
+        {categories.data.map((p) => (
+          <option key={p} value={p}>{p}</option>
+        ))}
+        
+      </select>
+    </label>
+    
     <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       <AgGridReact rowData={data} columnDefs={columnDefs} />
     </div>
+    </>
   );
 };
 
